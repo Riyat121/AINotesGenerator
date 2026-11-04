@@ -19,7 +19,7 @@ app.post("/api/credits/webhook", express.raw({ type: "application/json" }), stri
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://ai-notes-generator-kfc4.vercel.app/",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })

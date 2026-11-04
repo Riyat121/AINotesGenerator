@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown'
 import MermaidSetup from './MermaidSetup';
-import RechartSetUp from './RechartSetUp'
+import RechartSetUp from './RechartSetup'
 import { downloadPdf } from '../services/api';
 const markDownComponent = {
   h1: ({ children }) => (
@@ -161,7 +161,7 @@ const [quickRevision, setQuickRevision] = useState(false);
 
 {result.charts?.length > 0 && <section>
   <SectionHeader icon="📈" title="Charts" color="green" />
-  <RechartSetUp charts={result.charts} />
+  <RechartSetup charts={result.charts} />
 </section>}
     </div>
   )

@@ -10,7 +10,7 @@ import { getCurrentUser } from './services/api'
 import PaymentSuccess from './pages/PaymentSuccess'
 import PaymentFailed from './pages/PaymentFailed'
 
-export const serverUrl = "http://localhost:3000"
+export const serverUrl = "https://ainotesgeneratorserver-pwzu.onrender.com"
 
 function App() {
   const dispatch = useDispatch()

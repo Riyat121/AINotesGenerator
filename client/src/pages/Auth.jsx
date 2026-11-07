@@ -12,18 +12,25 @@ import axios from 'axios'
 function Auth() {
 
 const handleGoogleAuth = async () => {
-    try{
+     try {
+      const response = await signInWithPopup(auth, provider);
+      const User = response.user;
+      const name = User.displayName;
+      const email = User.email;
 
-        const response = await signInWithPopup(auth, provider);
-        const User = response.user;
-        const name = User.displayName;
-        const email = User.email;
-        const result = await axios.post(serverUrl + "/api/auth/google", { name, email }, { withCredentials: true });
-        console.log("User authenticated:", result.data);
+      const result = await axios.post(
+        serverUrl + "/api/auth/google",
+        { name, email },
+        { withCredentials: true }
+      );
+
+      console.log("User authenticated:", result.data);
+      dispatch(setUserData(result.data));
+      navigate("/", { replace: true });
     } catch (error) {
-        console.error("Error during Google authentication:", error);
+      console.error("Error during Google authentication:", error);
     }
-}
+  }
 
 
   return (

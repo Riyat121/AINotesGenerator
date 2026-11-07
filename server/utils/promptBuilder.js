@@ -16,7 +16,7 @@ You are a STRICT JSON generator for an exam preparation system.
 - Use ONLY double quotes "
 - NO comments, NO trailing commas
 - NO markdown code fences around the JSON
-- Escape line breaks using \\n
+- Inside JSON string values, write each line break as a single escape sequence \\n (ONE backslash followed by n). NEVER write a double backslash followed by n.
 - Do NOT use emojis inside text values (except ⭐ in subTopics keys and importance)
 
 TASK:
@@ -33,6 +33,7 @@ Include Charts: ${includeChart ? "YES" : "NO"}
 GLOBAL CONTENT RULES:
 - Use clear, simple, exam-oriented language
 - Notes MUST be Markdown formatted
+- The "notes" value must be one JSON string where headings and bullets are separated by line breaks, for example: "## Definition\\n- Point one\\n- Point two\\n\\n## Key Concepts\\n- Point three"
 - Headings and bullet points only
 - Do NOT mention diagram or charts inside "notes"; they go only in the diagram and charts fields
 

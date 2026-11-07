@@ -3,7 +3,21 @@ import Notes from "../models/notes.model.js";
 import { buildPrompt } from "../utils/promptBuilder.js";
 // import { generateGeminiResponse } from "../services/gemini.services.js";
 import { generateAIResponse } from "../services/groq.services.js";
-
+const cleanText = (data) => {
+  if (typeof data === "string") {
+    return data
+      .replace(/\\n/g, "\n")
+      .replace(/\\t/g, "\t")
+      .replace(/\\"/g, '"');
+  }
+  if (Array.isArray(data)) return data.map(cleanText);
+  if (data && typeof data === "object") {
+    return Object.fromEntries(
+      Object.entries(data).map(([k, v]) => [k, cleanText(v)])
+    );
+  }
+  return data;
+};
 export const generateNotes = async (req, res) => {
   try {
     const {
@@ -41,12 +55,13 @@ export const generateNotes = async (req, res) => {
       includeChart,
     });
 
-    const aiResponse = await generateAIResponse(prompt);
+   const aiResponse = await generateAIResponse(prompt);
 
-    let parsed = aiResponse;
-    if (typeof aiResponse === "string") {
-      parsed = JSON.parse(aiResponse.replace(/```json|```/g, "").trim());
-    }
+let parsed = aiResponse;
+if (typeof aiResponse === "string") {
+  parsed = JSON.parse(aiResponse.replace(/```json|```/g, "").trim());
+}
+parsed = cleanText(parsed);
 
     const notes = await Notes.create({
       user: user._id,
@@ -71,7 +86,7 @@ export const generateNotes = async (req, res) => {
     await user.save();
 
     return res.status(200).json({
-      data: aiResponse,
+      data: parsed,
       noteId: notes._id,
       creditsLeft: user.credits,
     });

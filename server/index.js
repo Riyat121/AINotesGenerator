@@ -20,6 +20,7 @@ app.post("/api/credits/webhook", express.raw({ type: "application/json" }), stri
 const allowedOrigins = [
   "http://localhost:5173",
   "https://ai-notes-generator-kfc4.vercel.app",
+  "https://ai-notes-generator-ejqu.vercel.app",
   process.env.CLIENT_URL?.replace(/\/$/, ""),
 ].filter(Boolean);
 

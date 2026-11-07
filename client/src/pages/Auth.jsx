@@ -2,7 +2,9 @@ import React from 'react'
 import { motion } from "motion/react"
 import { FcGoogle } from "react-icons/fc"
 import { auth, provider } from "../utils/firebase"
-
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { setUserData } from '../redux/userSlice'
 provider.setCustomParameters({
   prompt: "select_account"
 })
@@ -10,7 +12,8 @@ import {serverUrl} from "../App"
 import { signInWithPopup } from "firebase/auth"
 import axios from 'axios'
 function Auth() {
-
+ const dispatch = useDispatch()
+  const navigate = useNavigate()
 const handleGoogleAuth = async () => {
      try {
       const response = await signInWithPopup(auth, provider);
@@ -18,15 +21,14 @@ const handleGoogleAuth = async () => {
       const name = User.displayName;
       const email = User.email;
 
-      const result = await axios.post(
-        serverUrl + "/api/auth/google",
-        { name, email },
-        { withCredentials: true }
-      );
-
-      console.log("User authenticated:", result.data);
-      dispatch(setUserData(result.data));
-      navigate("/", { replace: true });
+     const result = await axios.post(
+  serverUrl + "/api/auth/google",
+  { name, email },
+  { withCredentials: true }
+);
+console.log("User authenticated:", result.data);
+dispatch(setUserData(result.data));
+navigate("/", { replace: true });
     } catch (error) {
       console.error("Error during Google authentication:", error);
     }

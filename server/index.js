@@ -24,10 +24,17 @@ const allowedOrigins = [
   process.env.CLIENT_URL?.replace(/\/$/, ""),
 ].filter(Boolean);
 
+// is project ke saare Vercel deployment URLs allow karne ke liye
+const vercelPattern = /^https:\/\/ai-notes-generator-[a-z0-9-]+\.vercel\.app$/;
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        vercelPattern.test(origin)
+      ) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS: " + origin));

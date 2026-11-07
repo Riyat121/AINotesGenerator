@@ -17,11 +17,22 @@ const PORT = process.env.PORT || 5000;
 // Webhook sabse pehle, express.json() se pehle (raw body chahiye)
 app.post("/api/credits/webhook", express.raw({ type: "application/json" }), stripeWebhook);
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ai-notes-generator-kfc4.vercel.app",
+  process.env.CLIENT_URL?.replace(/\/$/, ""),
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS: " + origin));
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   })
 );
 
